@@ -16,32 +16,7 @@ from replay import load_replays_from_file
 
 # Add FAVA source to path for importing filtering code
 sys.path.append(os.path.expanduser('~/Workspace/fava/src'))
-from fava.core.filters import AdvancedFilter, AccountFilter, TimeFilter
 from fava.core.fava_options import parse_options
-
-def create_fava_filters(time_filter, account_filter, filter_string, options_map=None, fava_options=None):
-    filters = []
-    if time_filter and options_map and fava_options:
-        filters.append(TimeFilter(options_map, fava_options, time_filter))
-    if account_filter:
-        filters.append(AccountFilter(account_filter))
-    if filter_string:
-        filters.append(AdvancedFilter(filter_string))
-    return filters
-
-def transaction_matches_replay(txn, replay, options_map=None, fava_options=None):
-    time_filter = replay.get('time')
-    account_filter = replay.get('account')
-    filter_string = replay.get('filter')
-    if not (account_filter or filter_string or time_filter):
-        return False  # Don't allow global replays
-    filters = create_fava_filters(time_filter, account_filter, filter_string, options_map, fava_options)
-    for filter_obj in filters:
-        entries = [txn]
-        filtered_entries = filter_obj.apply(entries)
-        if txn not in filtered_entries:
-            return False
-    return True
 
 def main():
     import argparse
