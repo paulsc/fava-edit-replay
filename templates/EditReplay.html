@@ -1,0 +1,8 @@
+<style>{% include 'style.css' %}</style>
+{% set data = extension.get_data() %}
+{% set page = request.args.get('page', 'home') %}
+{% if page == 'list-replays' %}
+  {% include 'list-replays.html' %}
+{% else %}
+  {% include 'home.html' %}
+{% endif %}

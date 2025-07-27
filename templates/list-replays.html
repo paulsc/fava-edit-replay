@@ -1,0 +1,44 @@
+{% import '_query_table.html' as querytable %}
+
+<div class="editreplay-list-replays-container">
+  <h2>Saved Replays</h2>
+  <table is="sortable-table" class="queryresults">
+    <thead>
+      <tr>
+        <th data-sort="string">Action</th>
+        <th data-sort="string">Lineno</th>
+        <th data-sort="string">Time</th>
+        <th data-sort="string">Account</th>
+        <th data-sort="string">Filter</th>
+        <th data-sort="string">Edits</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for replay in data.replays %}
+      <tr>
+        <td>
+          <span class="load-replay-btn" 
+                data-time="{{ replay.time_filter }}" 
+                data-account="{{ replay.account_filter }}" 
+                data-filter="{{ replay.advanced_filter }}" 
+                data-diff="{{ replay.diff }}"
+                title="Load replay">
+            ⬇
+          </span>
+        </td>
+        <td>{{ replay.lineno }}</td>
+        <td>{{ replay.time_filter }}</td>
+        <td>{{ replay.account_filter }}</td>
+        <td>{{ replay.advanced_filter }}</td>
+        <td>{{ replay.diff_readable }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div> 
+
+<div class="editreplay-apply-btn-container">
+  <div class="editreplay-btns-left">
+    <button id="back-to-home-btn" class="button">← Back</button>
+  </div>
+</div>

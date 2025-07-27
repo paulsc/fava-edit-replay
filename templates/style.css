@@ -1,0 +1,130 @@
+.editreplay-main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 0 0.5em;
+}
+.editreplay-header-block {
+  flex: 0 0 auto;
+  margin-bottom: 1em;
+  padding: 1em 0 0.5em 0;
+}
+.editreplay-transactions-container {
+  flex: 1 1 auto;
+  min-height: 100px;
+  overflow-y: auto;
+  margin-bottom: 0.5em;
+}
+.editreplay-apply-btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.75em 0 0.5em 0;
+  margin-bottom: 0;
+}
+
+/* Override sticky positioning for list-replays view */
+.editreplay-list-replays-container + .editreplay-apply-btn-container {
+  position: static;
+  margin-top: 1em;
+}
+.editreplay-btns-left {
+  display: flex;
+  gap: 1em;
+}
+.editreplay-btns-right {
+  display: flex;
+  gap: 1em;
+}
+.editreplay-apply-btn:disabled,
+.editreplay-apply-btn[aria-disabled="true"] {
+  background: #eee !important;
+  color: #aaa !important;
+  border-color: #ddd !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+.editreplay-transactions-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 0.5em;
+}
+.editreplay-transactions-container .head {
+  position: sticky;
+  top: 0;
+  background: #fafbfc;
+  box-shadow: 0 2px 2px -2px #eee;
+}
+@media (max-width: 600px) {
+  .editreplay-main-container {
+    padding: 0;
+  }
+}
+.filter-pill {
+  border-radius: 999px;
+  background: #f0f4f8;
+  color: #007cba;
+  border: 1px solid #b3d4fc;
+  padding: 0.25em 1em;
+  font-size: 0.95em;
+  font-weight: 500;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  margin: 0 0.1em;
+  outline: none;
+}
+.filter-pill:hover, .filter-pill:focus {
+  background: #e6f2ff;
+  color: #005b8a;
+  border-color: #007cba;
+}
+.editreplay-header-block .editreplay-lastdiff-list {
+  margin-bottom: 1em;
+  padding: 0.5em;
+  background-color: #f5f5f5;
+  border-left: 3px solid #007cba;
+  border-radius: 3px;
+  list-style: disc inside;
+}
+.editreplay-header-block .editreplay-noedit {
+  margin-bottom: 1em;
+  padding: 0.5em;
+  background-color: #f5f5f5;
+  border-left: 3px solid #ccc;
+  border-radius: 3px;
+}
+.editreplay-transactions-header h2 {
+  margin: 0;
+}
+.editreplay-transactions-header #filter-shortcuts {
+  display: flex;
+  gap: 0.5em;
+}
+.editreplay-apply-btn {
+  display: flex;
+  align-items: center;
+}
+.editreplay-apply-btn svg {
+  vertical-align: middle;
+  margin-right: 0.3em;
+}
+.editreplay-list-replays-container .queryresults {
+  width: 100%;
+}
+
+.load-replay-btn {
+  cursor: pointer;
+  font-size: 1.2em;
+} 

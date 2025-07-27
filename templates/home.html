@@ -1,0 +1,123 @@
+<div class="editreplay-main-container">
+  <div class="editreplay-header-block">
+    <h2>Last edit</h2>
+    {% if data.lastdiff_readable %}
+      <ul class="editreplay-lastdiff-list">
+        {% for line in data.lastdiff_readable %}
+          <li>{{ line }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="editreplay-noedit">No Edit recorded. 
+      Please edit a transaction first by clicking on it's date.</div>
+    {% endif %}
+  </div>
+
+  <div class="editreplay-transactions-header">
+    <h2>Matching transactions</h2>
+    {% if data.filter_suggestions %}
+      <div id="filter-shortcuts">
+        {% for suggestion in data.filter_suggestions %}
+          <button type="button" class="button filter-pill"
+            data-suggestion='{{ suggestion | tojson | e }}'
+            title='{{ suggestion.tooltip | e }}' >
+            {{ suggestion.label }}
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="editreplay-transactions-container">
+    <ol class="flex-table journal show-balance show-budget show-cleared show-custom show-linked show-pending show-query show-statement show-transaction">
+        <li class="head">
+            <p>
+            <span class="datecell" data-sort="num" data-sort-name="date" data-order="asc">Date</span>
+            <span class="flag" data-sort="string" data-sort-name="flag">F</span>
+            <span class="description" data-sort="string" data-sort-name="narration">Payee/Narration</span>
+            <span class="num">Units</span>
+            <span class="cost num">Cost</span>
+            <span class="num">Price</span>
+            </p>
+        </li>
+
+        {% for entry in data.transactions %}
+        {% set entry_hash = entry|hash_entry %}
+    
+            <li class="transaction  cleared">
+                <p>
+                    <span class="datecell" data-sort-value="10"><a href="#context-{{ entry_hash }}">{{entry.date}}</a></span>
+                    <span class="flag">{{entry.flag}}</span>
+                    <span class="description">
+                      <strong class="payee">{{entry.payee or '' }}</strong>{% if entry.payee and entry.narration %}<span class="separator"></span>{% endif %}{{entry.narration or '' }}
+                      {% for tag in entry.tags|sort %}<span class="tag">#{{ tag }}</span>{% endfor %}
+                      {% for link_ in entry.links|sort %}<span class="link">^{{ link_ }}</span>{% endfor %}
+                    </span>
+                    <span class="indicators" onclick="event.target.closest('.transaction').classList.toggle('show-full-entry')">
+                      <span></span>
+                      <span></span>
+                    </span>
+                </p>
+
+                {% set metadata_items = entry.meta|meta_items %}
+                <dl class="metadata">
+                    {% for key, value in metadata_items %}
+                        <dt>{{ key }}</dt>
+                        <dd>{{ value }}</dd>
+                    {% endfor %}
+                </dl>
+
+                {% if entry.postings %}
+                    <ul class="postings">
+                    {% for posting in entry.postings %}
+                        <li{% if posting.flag %} class="{{ posting.flag|flag_to_type }}"{% endif %}>
+                            <p>
+                                <span class="datecell"></span>
+                                <span class="flag">{{ posting.flag or '' }}</span>
+                                <span class="description">{{ posting.account }}</span>
+                                <span class="num">{% if posting.units %}{{ posting.units.number|incognito }} {{ posting.units.currency }}{% endif %}</span>
+                                <span class="num">{{ posting.cost.number|incognito }} {{ posting.cost.currency }}
+                                    {{- ', {}'.format(posting.cost.date) if posting.cost.date else '' }}
+                                    {{- ', "{}"'.format(posting.cost.label) if posting.cost.label else '' }}</span>
+                            </p>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+
+    </ol>
+  </div>
+
+  <div class="editreplay-apply-btn-container">
+    <div class="editreplay-btns-left">
+      <button id="list-replays-btn" class="button">
+        List Replays
+      </button>
+      <button id="save-replay-btn" class="button editreplay-apply-btn" {% if not data.lastdiff_readable %}disabled aria-disabled="true"{% endif %}>
+        <svg width="22" height="16" viewBox="0 0 64 64">
+          <path d="M36 6h10v16H36z" fill="#ffffff"></path>
+          <path d="M61.293 9.293l-6.586-6.586C54.318 2.318 53.55 2 53 2H9v4H5V2H3c-.55 0-1 .45-1 1v58c0 .55.45 1 1 1h58c.55 0 1-.45 1-1V11c0-.55-.318-1.318-.707-1.707M52 58H12V34c0-1.1.9-2 2-2h36c1.1 0 2 .9 2 2v24m0-36c0 1.1-.899 2-2 2H20c-1.1 0-2-.9-2-2V3h34v19m7 36c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1h2c.55 0 1 .45 1 1v2" fill="#ffffff"></path>
+          <path d="M17 36h30v2H17z" fill="#ffffff"></path>
+          <path d="M17 42h30v2H17z" fill="#ffffff"></path>
+          <path d="M17 48h30v2H17z" fill="#ffffff"></path>
+        </svg>
+        <span>Save Replay</span>
+      </button>
+    </div>
+    <div class="editreplay-btns-right">
+      <button id="apply-diff-btn" class="button editreplay-apply-btn" onclick="window.applyEditReplayDiff()" {% if not data.lastdiff_readable %}disabled aria-disabled="true"{% endif %}>
+        <svg width="22" height="16" viewBox="0 0 22 16">
+          <polygon points="1,2 11,8 1,14" fill="currentColor"/>
+          <polygon points="11,2 21,8 11,14" fill="currentColor"/>
+        </svg>
+        <span id="button-text">Edit Replay</span>
+        &nbsp;
+        <small>(apply to {{ data.transactions|length }} transactions)</small>
+      </button>
+      {% if data.lastdiff_json %}
+        <span id="editreplay-diff-json" style="display:none;">{{ data.lastdiff_json }}</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
