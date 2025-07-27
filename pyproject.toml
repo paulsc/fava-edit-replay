@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fava-edit-replay"
+version = "0.1.0"
+description = "Bulk edit extension for Fava"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "beancount",
+    "fava",
+    "deepdiff",
+    "flask",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "flake8",
+]
+
+[project.scripts]
+fava-edit-replay = "fava_edit_replay.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fava_edit_replay"]

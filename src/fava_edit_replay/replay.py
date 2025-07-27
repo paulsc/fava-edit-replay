@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import NamedTuple, Any
 import yaml
 from yaml.loader import SafeLoader
-from edit_replay.diff2text import format_diff
+from fava_edit_replay.diff2text import format_diff
 
 import logging
 logger = logging.getLogger("edit_replay")

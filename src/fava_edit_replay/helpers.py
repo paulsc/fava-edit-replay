@@ -15,7 +15,7 @@ from fava.core.file import get_entry_slice, find_entry_lines
 from fava.beans.str import to_string
 from fava.beans.funcs import get_position
 
-from edit_replay.replay import Replay
+from fava_edit_replay.replay import Replay
 
 logger = logging.getLogger("edit_replay.helpers")
 logger.setLevel(logging.INFO)

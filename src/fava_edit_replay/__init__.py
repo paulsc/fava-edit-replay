@@ -25,9 +25,9 @@ from fava.core.file import get_entry_slice
 from fava.ext import FavaExtensionBase
 from fava.ext import extension_endpoint
 
-from edit_replay.helpers import apply_replays, make_filter_suggestions
-from edit_replay.diff2text import format_diff
-from edit_replay.replay import Replay, save_replay_to_file, load_replays_from_file
+from fava_edit_replay.helpers import apply_replays, make_filter_suggestions
+from fava_edit_replay.diff2text import format_diff
+from fava_edit_replay.replay import Replay, save_replay_to_file, load_replays_from_file
 
 import logging
 logger = logging.getLogger("edit_replay")
