@@ -1,21 +1,13 @@
 #!/usr/bin/env python3
 import sys
 import os
-import yaml
 from pathlib import Path
 from beancount import loader
 from beancount.core.data import Custom
 
-# add the parent dir to the path so that we can import the helpers
-# there has to be a better way to do this
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+from fava_edit_replay.helpers import apply_replays
+from fava_edit_replay.replay import load_replays_from_file
 
-from helpers import apply_replays
-from replay import load_replays_from_file
-
-# Add FAVA source to path for importing filtering code
-sys.path.append(os.path.expanduser('~/Workspace/fava/src'))
 from fava.core.fava_options import parse_options
 
 def main():

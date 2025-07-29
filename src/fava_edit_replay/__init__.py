@@ -7,19 +7,15 @@ import datetime
 import json
 from decimal import Decimal
 from functools import partial
-from pathlib import Path
 
-from beancount.core.data import Transaction
-from beancount.parser import parser
 from deepdiff import DeepDiff
 from deepdiff import Delta
 from deepdiff.serialization import json_dumps
 from flask import request
 
-import yaml
-from yaml.loader import SafeLoader
+from beancount.core.data import Transaction
+from beancount.parser import parser
 
-from fava.beans.str import to_string
 from fava.context import g
 from fava.core.file import get_entry_slice
 from fava.ext import FavaExtensionBase
