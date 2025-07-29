@@ -22,7 +22,14 @@ def save_replay_to_file(replay: Replay, replays_path: Path) -> str:
     if replays_path.exists():
         with replays_path.open("r", encoding="utf-8") as f:
             replays = yaml.safe_load(f) or []
-    replays.append(replay._asdict())
+
+    replay_data = {
+        'time_filter': replay.time_filter,
+        'account_filter': replay.account_filter,
+        'advanced_filter': replay.advanced_filter,
+        'diff': replay.diff,
+    }
+    replays.append(replay_data)
     with replays_path.open("w", encoding="utf-8") as f:
         yaml.safe_dump(replays, f, allow_unicode=True, sort_keys=True)
 
