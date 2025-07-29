@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from beancount.parser import parser
+from beancount.core.number import MISSING
 import re
 import logging
 
@@ -168,15 +169,16 @@ def make_filter_suggestions(slice_str: str) -> list[dict]:
     if txn.date:
         result.append({ 'label': txn.date, 'date': str(txn.date) })
 
-    # Account filter suggestion (from first posting)
-    if hasattr(txn, 'postings') and txn.postings and len(txn.postings) > 0:
-        acct = getattr(txn.postings[0], 'account', None)
-        if acct:
-            result.append({ 'label': acct, 'account': acct })
-        amount = getattr(txn.postings[0], 'units', None)
-        if amount:
-            abs_int_amount = int(abs(amount.number))
-            result.append({ 'label': amount, 'filter': f"={abs_int_amount}" })
+    # Account filter and amount suggestion (from all postings)
+    if hasattr(txn, 'postings') and txn.postings:
+        for posting in txn.postings:
+            acct = getattr(posting, 'account', None)
+            if acct:
+                result.append({ 'label': acct, 'account': acct })
+            amount = getattr(posting, 'units', None)
+            if amount and amount != MISSING:
+                abs_int_amount = int(abs(amount.number))
+                result.append({ 'label': amount, 'filter': f"={abs_int_amount}" })
 
     # Generate tooltip for each suggestion (excluding 'label')
     for d in result:
