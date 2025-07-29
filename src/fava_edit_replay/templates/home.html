@@ -28,24 +28,25 @@
     {% endif %}
   </div>
   <div class="editreplay-transactions-container">
-    <ol class="flex-table journal show-balance show-budget show-cleared show-custom show-linked show-pending show-query show-statement show-transaction">
-        <li class="head">
-            <p>
-            <span class="datecell" data-sort="num" data-sort-name="date" data-order="asc">Date</span>
-            <span class="flag" data-sort="string" data-sort-name="flag">F</span>
-            <span class="description" data-sort="string" data-sort-name="narration">Payee/Narration</span>
-            <span class="num">Units</span>
-            <span class="cost num">Cost</span>
-            <span class="num">Price</span>
-            </p>
-        </li>
+    <fava-journal>
+      <ol class="flex-table journal show-balance show-budget show-cleared show-custom show-linked show-pending show-query show-statement show-transaction">
+          <li class="head">
+              <p>
+              <span class="datecell" data-sort="string" data-sort-name="date" data-order="asc">Date</span>
+              <span class="flag" data-sort="string" data-sort-name="flag">F</span>
+              <span class="description" data-sort="string" data-sort-name="narration">Payee/Narration</span>
+              <span class="num">Units</span>
+              <span class="cost num">Cost</span>
+              <span class="num">Price</span>
+              </p>
+          </li>
 
         {% for entry in data.transactions %}
         {% set entry_hash = entry|hash_entry %}
     
             <li class="transaction  cleared">
                 <p>
-                    <span class="datecell" data-sort-value="10"><a href="#context-{{ entry_hash }}">{{entry.date}}</a></span>
+                    <span class="datecell" data-sort-value="{{ entry.date }}"><a href="#context-{{ entry_hash }}">{{entry.date}}</a></span>
                     <span class="flag">{{entry.flag}}</span>
                     <span class="description">
                       <strong class="payee">{{entry.payee or '' }}</strong>{% if entry.payee and entry.narration %}<span class="separator"></span>{% endif %}{{entry.narration or '' }}
@@ -86,7 +87,8 @@
             </li>
         {% endfor %}
 
-    </ol>
+      </ol>
+    </fava-journal>
   </div>
 
   <div class="editreplay-apply-btn-container">
