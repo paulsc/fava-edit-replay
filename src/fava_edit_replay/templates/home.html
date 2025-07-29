@@ -15,17 +15,6 @@
 
   <div class="editreplay-transactions-header">
     <h2>Matching transactions</h2>
-    {% if data.filter_suggestions %}
-      <div id="filter-shortcuts">
-        {% for suggestion in data.filter_suggestions %}
-          <button type="button" class="button filter-pill"
-            data-suggestion='{{ suggestion | tojson | e }}'
-            title='{{ suggestion.tooltip | e }}' >
-            {{ suggestion.label }}
-          </button>
-        {% endfor %}
-      </div>
-    {% endif %}
   </div>
   <div class="editreplay-transactions-container">
     <fava-journal>
@@ -92,6 +81,18 @@
   </div>
 
   <div class="editreplay-apply-btn-container">
+    {% if data.filter_suggestions %}
+      <div id="filter-shortcuts" class="editreplay-filter-shortcuts">
+        {% for suggestion in data.filter_suggestions %}
+          <button type="button" class="button filter-pill"
+            data-suggestion='{{ suggestion | tojson | e }}'
+            title='{{ suggestion.tooltip | e }}' >
+            {{ suggestion.label }}
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <div class="editreplay-btns-left">
       <button id="list-replays-btn" class="button">
         List Replays

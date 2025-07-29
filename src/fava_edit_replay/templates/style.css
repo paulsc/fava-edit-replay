@@ -15,10 +15,16 @@
   flex: 1 1 auto;
   min-height: 100px;
   overflow-y: auto;
+  overflow-x: hidden;
   margin-bottom: 0.5em;
+}
+.editreplay-filter-shortcuts {
+  margin-bottom: 2em;
+  width: 100%;
 }
 .editreplay-apply-btn-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   position: sticky;
