@@ -94,6 +94,28 @@ function loadReplay(btn) {
   window.location.href = url.toString();
 }
 
+async function deleteReplay(btn) {
+  const lineno = btn.getAttribute('data-lineno');
+  
+  if (!confirm('Are you sure you want to delete this replay?')) {
+    return;
+  }
+  
+  try {
+    const params = new URLSearchParams(window.location.search);
+    params.set('lineno', lineno);
+    const url = `delete_replay?${params.toString()}`;
+    const response = await fetch(url);
+    const result = await response.text();
+    alert(result);
+    // Reload the page to refresh the replay list
+    window.location.reload();
+  } catch (error) {
+    console.error('Error deleting replay:', error);
+    alert('Failed to delete replay.');
+  }
+}
+
 export default {
   onExtensionPageLoad: async () => {
     // Attach click listener to apply-diff-btn
@@ -116,6 +138,12 @@ export default {
     document.querySelectorAll('.load-replay-btn').forEach(btn => {
       btn.addEventListener('click', function() {
         loadReplay(this);
+      });
+    });
+    // Attach click listeners to all delete-replay buttons
+    document.querySelectorAll('.delete-replay-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        deleteReplay(this);
       });
     });
     // Store the raw diff JSON for saving

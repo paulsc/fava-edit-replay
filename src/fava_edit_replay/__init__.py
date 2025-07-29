@@ -23,7 +23,7 @@ from fava.ext import extension_endpoint
 
 from fava_edit_replay.helpers import apply_replays, make_filter_suggestions
 from fava_edit_replay.diff2text import format_diff
-from fava_edit_replay.replay import Replay, save_replay_to_file, load_replays_from_file
+from fava_edit_replay.replay import Replay, save_replay_to_file, load_replays_from_file, delete_replay_by_lineno
 
 import logging
 logger = logging.getLogger("edit_replay")
@@ -97,6 +97,23 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
         )
         save_replay_to_file(replay, self.database_path())
         return "Replay saved."
+
+    @extension_endpoint
+    def delete_replay(self):
+        """Delete a replay by line number from the YAML file."""
+        lineno = request.args.get("lineno")
+        if not lineno:
+            return "No line number provided."
+        
+        try:
+            lineno = int(lineno)
+            delete_replay_by_lineno(lineno, self.database_path())
+            return "Replay deleted."
+        except ValueError:
+            return "Invalid line number provided."
+        except Exception as e:
+            logger.error(f"Error deleting replay: {e}")
+            return f"Error deleting replay: {e}"
 
     def before_request(self):
         if request.path.endswith("/api/source_slice") and request.method == "PUT":

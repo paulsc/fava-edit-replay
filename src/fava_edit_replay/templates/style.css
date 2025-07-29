@@ -130,7 +130,7 @@
   width: 100%;
 }
 
-.load-replay-btn {
+.load-replay-btn, .delete-replay-btn {
   cursor: pointer;
   font-size: 1.2em;
 } 
