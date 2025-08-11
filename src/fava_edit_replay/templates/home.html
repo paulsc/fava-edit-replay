@@ -33,7 +33,7 @@
         {% for entry in data.transactions %}
         {% set entry_hash = entry|hash_entry %}
     
-            <li class="transaction  cleared">
+            <li class="transaction cleared">
                 <p>
                     <span class="datecell" data-sort-value="{{ entry.date }}"><a href="#context-{{ entry_hash }}">{{entry.date}}</a></span>
                     <span class="flag">{{entry.flag}}</span>
@@ -42,7 +42,7 @@
                       {% for tag in entry.tags|sort %}<span class="tag">#{{ tag }}</span>{% endfor %}
                       {% for link_ in entry.links|sort %}<span class="link">^{{ link_ }}</span>{% endfor %}
                     </span>
-                    <span class="indicators" onclick="event.target.closest('.transaction').classList.toggle('show-full-entry')">
+                    <span class="indicators">
                       <span></span>
                       <span></span>
                     </span>
