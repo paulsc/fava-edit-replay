@@ -36,7 +36,3 @@ Install with development dependencies:
 ```bash
 pip install -e .[dev]
 ```
-
-## License
-
-[Add your license here] 
