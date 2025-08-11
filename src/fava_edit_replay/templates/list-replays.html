@@ -2,40 +2,40 @@
 
 <div class="editreplay-list-replays-container">
   <h2>Saved Replays</h2>
-  <table is="sortable-table" class="queryresults">
+  <table is="sortable-table" class="queryresults editreplay-full-width-table">
     <thead>
       <tr>
-        <th data-sort="string">Action</th>
-        <th data-sort="string">Lineno</th>
-        <th data-sort="string">Time</th>
-        <th data-sort="string">Account</th>
-        <th data-sort="string">Filter</th>
-        <th data-sort="string">Edits</th>
+        <th data-sort="string" class="editreplay-th-lineno">Line</th>
+        <th data-sort="string" class="editreplay-th-time">Time</th>
+        <th data-sort="string" class="editreplay-th-account">Account</th>
+        <th data-sort="string" class="editreplay-th-filter">Filter</th>
+        <th data-sort="string" class="editreplay-th-edits">Edits</th>
+        <th class="editreplay-th-actions"></th>
       </tr>
     </thead>
     <tbody>
       {% for replay in data.replays %}
       <tr>
-        <td>
-          <span class="load-replay-btn" 
+        <td class="editreplay-td-lineno" title="{{ replay.lineno }}">{{ replay.lineno }}</td>
+        <td class="editreplay-td-time" title="{{ replay.time_filter }}">{{ replay.time_filter }}</td>
+        <td class="editreplay-td-account" title="{{ replay.account_filter }}">{{ replay.account_filter }}</td>
+        <td class="editreplay-td-filter" title="{{ replay.advanced_filter }}">{{ replay.advanced_filter }}</td>
+        <td class="editreplay-td-edits" title="{{ replay.diff_readable }}">{{ replay.diff_readable }}</td>
+        <td class="editreplay-td-actions">
+          <button class="load-replay-btn muted" 
                 data-time="{{ replay.time_filter }}" 
                 data-account="{{ replay.account_filter }}" 
                 data-filter="{{ replay.advanced_filter }}" 
                 data-diff="{{ replay.diff }}"
                 title="Load replay">
-            📂
+            ↓
           </span>
-          <span class="delete-replay-btn" 
+          <button class="delete-replay-btn muted" 
                 data-lineno="{{ replay.lineno }}"
                 title="Delete replay">
             ✖️
           </span>
         </td>
-        <td>{{ replay.lineno }}</td>
-        <td>{{ replay.time_filter }}</td>
-        <td>{{ replay.account_filter }}</td>
-        <td>{{ replay.advanced_filter }}</td>
-        <td>{{ replay.diff_readable }}</td>
       </tr>
       {% endfor %}
     </tbody>
