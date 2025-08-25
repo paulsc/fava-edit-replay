@@ -115,6 +115,22 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
             logger.error(f"Error deleting replay: {e}")
             return f"Error deleting replay: {e}"
 
+    @extension_endpoint
+    def apply_all_replays(self):
+        """Apply all saved replays to the entire ledger."""
+        replays = load_replays_from_file(self.database_path())
+        if not replays:
+            return "No replays to apply."
+        
+        modified_count = apply_replays(
+            replays,
+            self.ledger.all_entries,
+            self.ledger.options,
+            self.ledger.fava_options
+        )
+        self.ledger.load_file()
+        return f"Applied {len(replays)} replays to {modified_count} transactions."
+
     def before_request(self):
         if request.path.endswith("/api/source_slice") and request.method == "PUT":
             data = request.get_json(force=True, silent=True)

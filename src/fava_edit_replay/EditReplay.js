@@ -116,6 +116,34 @@ async function deleteReplay(btn) {
   }
 }
 
+async function applyAllReplays() {
+  if (!confirm('This will apply all replays to all the transactions in the ledger, are you sure?')) {
+    return;
+  }
+  
+  const button = document.getElementById('apply-all-replays-btn');
+  const buttonText = button.querySelector('span');
+  const originalText = buttonText.textContent;
+  
+  buttonText.textContent = 'Applying...';
+  button.disabled = true;
+  
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const url = `apply_all_replays?${params.toString()}`;
+    const response = await fetch(url);
+    const result = await response.text();
+    alert(result);
+    // Reload the page to refresh the replay list
+    window.location.reload();
+  } catch (error) {
+    console.error('Error applying all replays:', error);
+    alert('Failed to apply all replays.');
+    buttonText.textContent = originalText;
+    button.disabled = false;
+  }
+}
+
 export default {
   onExtensionPageLoad: async () => {
     // Attach click listener to apply-diff-btn
@@ -168,6 +196,11 @@ export default {
         url.searchParams.set('page', 'home');
         window.location.href = url.toString();
       });
+    }
+    // Attach click listener to apply-all-replays-btn
+    const applyAllReplaysBtn = document.getElementById('apply-all-replays-btn');
+    if (applyAllReplaysBtn) {
+      applyAllReplaysBtn.addEventListener('click', applyAllReplays);
     }
   }
 }

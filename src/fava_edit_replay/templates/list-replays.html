@@ -29,12 +29,12 @@
                 data-diff="{{ replay.diff }}"
                 title="Load replay">
             ↓
-          </span>
+          </button>
           <button class="delete-replay-btn muted" 
                 data-lineno="{{ replay.lineno }}"
                 title="Delete replay">
             ✖️
-          </span>
+          </button>
         </td>
       </tr>
       {% endfor %}
@@ -45,5 +45,14 @@
 <div class="editreplay-apply-btn-container">
   <div class="editreplay-btns-left">
     <button id="back-to-home-btn" class="button">← Back</button>
+  </div>
+  <div class="editreplay-btns-right">
+    <button id="apply-all-replays-btn" class="button editreplay-apply-btn">
+      <svg width="22" height="16" viewBox="0 0 22 16">
+        <polygon points="1,2 11,8 1,14" fill="currentColor"/>
+        <polygon points="11,2 21,8 11,14" fill="currentColor"/>
+      </svg>
+      <span>Apply All</span>
+    </button>
   </div>
 </div>
