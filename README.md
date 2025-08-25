@@ -6,14 +6,19 @@ A bulk edit extension for [Fava](https://beancount.github.io/fava/), the web int
 
 This extension allows you to:
 - Apply bulk edits to multiple Beancount transactions at once
-- Save edit operations as "replays" that can be applied later
+- Save edit operations (a combination of search filters and a diff) as "replays" that can be applied later
 - Filter transactions by account, time period, or custom filters
-- Preview changes before applying them
+- Suggests filters based on last modified transaction
 
 ## Installation
 
 ```bash
-pip install -e .
+pip install git+https://github.com/paulsc/fava-edit-replay
+```
+
+Don't forget to add the extension to your beancount file:
+```bash
+2000-11-11 custom "fava-extension" "fava_edit_replay" "{ 'db': 'my-replays.yaml' }"
 ```
 
 ## Usage
@@ -25,14 +30,7 @@ pip install -e .
 
 ### Command Line
 
+Use the command line tool to apply all the replays to your ledger.
 ```bash
 fava-edit-replay replays.yaml ledger.beancount
-```
-
-## Development
-
-Install with development dependencies:
-
-```bash
-pip install -e .[dev]
 ```
