@@ -16,7 +16,7 @@ This extension allows you to:
 pip install git+https://github.com/paulsc/fava-edit-replay
 ```
 
-Don't forget to add the extension to your beancount file:
+Don't forget to add the extension to your beancount file. The 'db' option specifies the path of the yaml database file containing your saved replays.
 ```bash
 2000-11-11 custom "fava-extension" "fava_edit_replay" "{ 'db': 'my-replays.yaml' }"
 ```
