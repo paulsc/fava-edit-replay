@@ -16,17 +16,19 @@ This extension allows you to:
 pip install git+https://github.com/paulsc/fava-edit-replay
 ```
 
-Don't forget to add the extension to your beancount file:
+## Usage
+
+### Through Fava
+
+1. Add the extension to your ledger. 
 ```bash
 2000-11-11 custom "fava-extension" "fava_edit_replay" "{ 'db': 'my-replays.yaml' }"
 ```
+The 'db' option specifies the path of the yaml database file containing your saved replays.
 
-## Usage
+2. Make an edit using the built-in slice editor in Fava.
 
-### As a Fava Extension
-
-1. Add the extension to your Fava configuration
-2. Use the web interface to create and apply bulk edits
+3. Open the extension through the "Edit Replay" item in the sidebar. Modify the search filters, the click the "Edit Replay" in the bottom right corner to bulk-apply your last edit. 
 
 ### Command Line
 
