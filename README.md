@@ -1,11 +1,10 @@
 # Fava Edit Replay
 
-A bulk edit extension for [Fava](https://beancount.github.io/fava/), the web interface for Beancount.
+A bulk edit extension for [Fava](https://beancount.github.io/fava/), the web interface for Beancount. Watch the video:
 
-Watch the video:
-
-[![Watch the video](assets/thumb.png)](https://www.youtube.com/watch?v=xuy0AhDnU-U)
-
+<a href="https://www.youtube.com/watch?v=xuy0AhDnU-U">
+<img src="https://raw.githubusercontent.com/paulsc/fava-edit-replay/main/assets/thumb.png" width="200" />
+</a>
 
 ## What it does
 
