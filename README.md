@@ -2,6 +2,11 @@
 
 A bulk edit extension for [Fava](https://beancount.github.io/fava/), the web interface for Beancount.
 
+Watch the video:
+
+[![Watch the video](assets/thumb.png)](https://www.youtube.com/watch?v=xuy0AhDnU-U)
+
+
 ## What it does
 
 This extension allows you to:
