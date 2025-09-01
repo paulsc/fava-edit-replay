@@ -121,7 +121,7 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
         replays = load_replays_from_file(self.database_path())
         if not replays:
             return "No replays to apply."
-        
+
         modified_count = apply_replays(
             replays,
             self.ledger.all_entries,
@@ -145,9 +145,8 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
                         before, _ = get_entry_slice(entry)
                     except Exception as e:
                         before = f"[Error getting before slice: {e}]"
-                    after = new_source
                     self.before_slice = before
-                    self.after_slice = after
+                    self.after_slice = new_source
 
     def _compute_diff(self, before: str, after: str) -> str | None:
         """Computes the semantic diff between two transaction source strings."""
