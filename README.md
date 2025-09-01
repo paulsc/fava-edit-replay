@@ -1,6 +1,8 @@
 # Fava Edit Replay
 
-A bulk edit extension for [Fava](https://beancount.github.io/fava/), the web interface for Beancount. Watch the video:
+A bulk edit extension for [Fava](https://beancount.github.io/fava/), the web interface for Beancount. 
+
+Watch the video below or read [the blog post](https://medium.com/@paulsc/fava-categorizing-transactions-3c678b676f83).
 
 <a href="https://www.youtube.com/watch?v=xuy0AhDnU-U">
 <img src="https://raw.githubusercontent.com/paulsc/fava-edit-replay/main/assets/thumb.png" width="200" />
