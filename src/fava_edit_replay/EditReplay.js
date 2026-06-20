@@ -144,8 +144,21 @@ async function applyAllReplays() {
   }
 }
 
+function handleJournalClick(event) {
+  const target = event.target;
+  if (!(target instanceof HTMLElement) || target instanceof HTMLAnchorElement) {
+    return;
+  }
+  if (target.closest('.indicators')) {
+    target.closest('.journal > li')?.classList.toggle('show-full-entry');
+  }
+}
+
 export default {
   onExtensionPageLoad: async () => {
+    document
+      .querySelector('.editreplay-transactions-container ol.journal')
+      ?.addEventListener('click', handleJournalClick);
     // Attach click listener to apply-diff-btn
     const applyBtn = document.getElementById('apply-diff-btn');
     if (applyBtn) {
