@@ -20,6 +20,21 @@ def format_diff(delta):
             new_value = change.get("new_value", "")
             changes.append(f'{field_name} changed to "{new_value}"')
 
+    # Handle type_changes
+    if "type_changes" in delta:
+        for path, change in delta["type_changes"].items():
+            field_name = _format_field_name(path)
+            new_value = change.get("new_value", "")
+            old_type = change.get("old_type", "")
+            new_type = change.get("new_type", "")
+
+            if new_type == "NoneType":
+                changes.append(f'{field_name} removed.')
+            elif old_type == "NoneType":
+                changes.append(f'{field_name} set to "{new_value}"')
+            else:
+                changes.append(f'{field_name} changed from {old_type} to {new_type} ("{new_value}")')
+
     # Handle set_item_added
     if "set_item_added" in delta:
         for path, items in delta["set_item_added"].items():
