@@ -20,8 +20,8 @@ This extension allows you to:
 
 - Supports: 
   - Editing date, flag, payee, narration
-  - Posting account and amount
-- Doesn't currently support adding / removing entire postings
+  - Editing any exisiting posting account and amount
+- Doesn't currently support adding or removing entire postings
 
 ## Installation
 
