@@ -24,6 +24,7 @@ These edits are currently supported:
   - Adding / removing tags
   - Editing the account or amount of any posting
 
+
 The extension doesn't currently support adding or removing entire postings.
 
 ## Installation
