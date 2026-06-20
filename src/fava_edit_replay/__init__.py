@@ -22,7 +22,7 @@ from fava.ext import FavaExtensionBase
 from fava.ext import extension_endpoint
 
 from fava_edit_replay.helpers import apply_replays, make_filter_suggestions
-from fava_edit_replay.diff2text import format_diff
+from fava_edit_replay.diff2text import build_txn_diff_display
 from fava_edit_replay.replay import Replay, save_replay_to_file, load_replays_from_file, delete_replay_by_lineno
 
 import logging
@@ -194,7 +194,6 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
 
     def get_data(self):
         txns = self.get_transactions(g.filtered)
-        lastdiff_readable = []
         lastdiff_json = None
         filter_suggestions = []
 
@@ -202,22 +201,35 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
         diff_from_query = request.args.get("diff", "")
         if diff_from_query:
             lastdiff_json = diff_from_query
-            diff_dict = json.loads(diff_from_query)
-            lastdiff_readable = format_diff(diff_dict)
         elif self.before_slice is not None and self.after_slice is not None:
             lastdiff_json = self._compute_diff(self.before_slice, self.after_slice)
-            if lastdiff_json:
-                diff_dict = json.loads(lastdiff_json)
-                lastdiff_readable = format_diff(diff_dict)
             filter_suggestions = make_filter_suggestions(self.before_slice)
 
         replays = load_replays_from_file(self.database_path())
+        txn_diff_display = None
+        if lastdiff_json and self.before_slice:
+            try:
+                before_entries, o_errors, _ = parser.parse_string(self.before_slice)
+                after_source = self.after_slice or self.before_slice
+                after_entries, m_errors, _ = parser.parse_string(after_source)
+                if not o_errors and not m_errors and before_entries:
+                    diff_dict = json.loads(lastdiff_json)
+                    after_txn = after_entries[0] if after_entries else before_entries[0]
+                    txn_diff_display = build_txn_diff_display(
+                        before_entries[0], after_txn, diff_dict
+                    )
+            except Exception as e:
+                logger.error(f"Error building txn diff display: {e}")
+
         return {
             "transactions": txns,
-            "lastdiff_readable": lastdiff_readable,
             "lastdiff_json": lastdiff_json,
+            "lastdiff_json_pp": json.dumps(json.loads(lastdiff_json), indent=2) if lastdiff_json else None,
             "filter_suggestions": filter_suggestions,
             "replays": replays,
+            "before_slice": self.before_slice,
+            "after_slice": self.after_slice,
+            "txn_diff_display": txn_diff_display,
         }
 
 

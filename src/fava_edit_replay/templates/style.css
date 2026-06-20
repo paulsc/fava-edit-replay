@@ -104,6 +104,27 @@
   border-radius: 3px;
   list-style: disc inside;
 }
+.txn-diff-ledger {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.9em;
+  padding: 0.5em;
+  background: #f5f5f5;
+  border-left: 3px solid #007cba;
+  border-radius: 3px;
+  margin-bottom: 0.5em;
+  white-space: pre-wrap;
+}
+.txn-diff-line {
+  display: block;
+}
+.txn-diff-changed,
+.txn-diff-added {
+  background: #d4edda;
+}
+.txn-diff-removed {
+  background: #f8d7da;
+  text-decoration: line-through;
+}
 .editreplay-header-block .editreplay-noedit {
   margin-bottom: 1em;
   padding: 0.5em;

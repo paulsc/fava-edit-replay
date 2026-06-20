@@ -1,0 +1,3 @@
+{% if data.txn_diff_display %}
+<pre class="txn-diff-ledger">{% for line in data.txn_diff_display.lines %}<span class="txn-diff-line">{% for span in line %}<span class="txn-diff-{{ span.kind }}">{{ span.text }}</span>{% endfor %}</span>{% endfor %}</pre>
+{% endif %}

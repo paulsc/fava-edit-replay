@@ -1,14 +1,9 @@
 <div class="editreplay-main-container">
   <div class="editreplay-header-block">
     <h2>Last edit</h2>
-    {% if data.lastdiff_readable %}
-      <ul class="editreplay-lastdiff-list">
-        {% for line in data.lastdiff_readable %}
-          <li>{{ line }}</li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <div class="editreplay-noedit">No Edit recorded. 
+    {% include "txn-diff.html" %}
+    {% if not data.lastdiff_json %}
+      <div class="editreplay-noedit">No Edit recorded.
       Please edit a transaction first by clicking on it's date.</div>
     {% endif %}
   </div>
@@ -97,7 +92,7 @@
       <button id="list-replays-btn" class="button">
         List Replays
       </button>
-      <button id="save-replay-btn" class="button editreplay-apply-btn" {% if not data.lastdiff_readable %}disabled aria-disabled="true"{% endif %}>
+      <button id="save-replay-btn" class="button editreplay-apply-btn" {% if not data.lastdiff_json %}disabled aria-disabled="true"{% endif %}>
         <svg width="22" height="16" viewBox="0 0 64 64">
           <path d="M36 6h10v16H36z" fill="#ffffff"></path>
           <path d="M61.293 9.293l-6.586-6.586C54.318 2.318 53.55 2 53 2H9v4H5V2H3c-.55 0-1 .45-1 1v58c0 .55.45 1 1 1h58c.55 0 1-.45 1-1V11c0-.55-.318-1.318-.707-1.707M52 58H12V34c0-1.1.9-2 2-2h36c1.1 0 2 .9 2 2v24m0-36c0 1.1-.899 2-2 2H20c-1.1 0-2-.9-2-2V3h34v19m7 36c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1h2c.55 0 1 .45 1 1v2" fill="#ffffff"></path>
@@ -109,7 +104,7 @@
       </button>
     </div>
     <div class="editreplay-btns-right">
-      <button id="apply-diff-btn" class="button editreplay-apply-btn" onclick="window.applyEditReplayDiff()" {% if not data.lastdiff_readable %}disabled aria-disabled="true"{% endif %}>
+      <button id="apply-diff-btn" class="button editreplay-apply-btn" onclick="window.applyEditReplayDiff()" {% if not data.lastdiff_json %}disabled aria-disabled="true"{% endif %}>
         <svg width="22" height="16" viewBox="0 0 22 16">
           <polygon points="1,2 11,8 1,14" fill="currentColor"/>
           <polygon points="11,2 21,8 11,14" fill="currentColor"/>
