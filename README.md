@@ -16,6 +16,13 @@ This extension allows you to:
 - Filter transactions by account, time period, or custom filters
 - Suggests filters based on last modified transaction
 
+## Limitations
+
+- Supports: 
+  - Editing date, flag, payee, narration
+  - Posting account and amount
+- Doesn't currently support adding / removing entire postings
+
 ## Installation
 
 ```bash
