@@ -283,9 +283,7 @@ def _quote_if_needed(value: str) -> str:
 
 
 def _quote_always(value: str) -> str:
-    if not value:
-        return value
-    escaped = value.replace('"', '\\"')
+    escaped = (value or "").replace('"', '\\"')
     return f'"{escaped}"'
 
 

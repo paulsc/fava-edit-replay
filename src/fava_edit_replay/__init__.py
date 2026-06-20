@@ -23,6 +23,7 @@ from fava.ext import extension_endpoint
 
 from fava_edit_replay.helpers import apply_replays, make_filter_suggestions
 from fava_edit_replay.diff2text import build_txn_diff_display
+from fava_edit_replay.diff2text import format_diff
 from fava_edit_replay.replay import Replay, save_replay_to_file, load_replays_from_file, delete_replay_by_lineno
 
 import logging
@@ -195,6 +196,7 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
     def get_data(self):
         txns = self.get_transactions(g.filtered)
         lastdiff_json = None
+        lastdiff_readable = []
         filter_suggestions = []
 
         # Check for diff in query string parameters first
@@ -204,6 +206,9 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
         elif self.before_slice is not None and self.after_slice is not None:
             lastdiff_json = self._compute_diff(self.before_slice, self.after_slice)
             filter_suggestions = make_filter_suggestions(self.before_slice)
+
+        if lastdiff_json:
+            lastdiff_readable = format_diff(json.loads(lastdiff_json))
 
         replays = load_replays_from_file(self.database_path())
         txn_diff_display = None
@@ -223,6 +228,7 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
 
         return {
             "transactions": txns,
+            "lastdiff_readable": lastdiff_readable,
             "lastdiff_json": lastdiff_json,
             "lastdiff_json_pp": json.dumps(json.loads(lastdiff_json), indent=2) if lastdiff_json else None,
             "filter_suggestions": filter_suggestions,

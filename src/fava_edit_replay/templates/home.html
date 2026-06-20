@@ -2,7 +2,13 @@
   <div class="editreplay-header-block">
     <h2>Last edit</h2>
     {% include "txn-diff.html" %}
-    {% if not data.lastdiff_json %}
+    {% if data.lastdiff_readable %}
+      <ul class="editreplay-lastdiff-list">
+        {% for line in data.lastdiff_readable %}
+          <li>{{ line }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
       <div class="editreplay-noedit">No Edit recorded.
       Please edit a transaction first by clicking on it's date.</div>
     {% endif %}
