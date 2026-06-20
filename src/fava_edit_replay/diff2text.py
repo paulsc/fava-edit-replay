@@ -254,8 +254,12 @@ def build_txn_diff_display(before_txn, after_txn, diff_dict: dict) -> TxnDiffDis
 
     header_spans: list[DiffSpan] = []
     header_spans.extend(_header_date_flag_spans(before_txn, after_txn, index))
-    header_spans.extend(_header_payee_spans(before_txn, after_txn, index))
-    header_spans.extend(_header_narration_spans(before_txn, after_txn, index))
+    header_spans.extend(_header_quoted_field(
+        "root.payee", before_txn.payee, after_txn.payee, index, suffix_space=True
+    ))
+    header_spans.extend(_header_quoted_field(
+        "root.narration", before_txn.narration, after_txn.narration, index
+    ))
     header_spans.extend(_header_tag_spans(before_txn, index))
 
     meta_lines = _meta_line_spans(before_txn, after_txn, index)
@@ -317,6 +321,21 @@ def _span_for_field(
     return DiffSpan(formatter(before_value), "normal")
 
 
+def _header_quoted_field(
+    path: str,
+    before: str | None,
+    after: str | None,
+    index: DiffIndex,
+    suffix_space: bool = False,
+) -> list[DiffSpan]:
+    if not before and not after and path not in index.fields:
+        return []
+    spans = [_span_for_field(path, before or "", after or "", index, _quote_always)]
+    if suffix_space:
+        spans.append(DiffSpan(" ", "normal"))
+    return spans
+
+
 def _header_date_flag_spans(before_txn, after_txn, index: DiffIndex) -> list[DiffSpan]:
     spans = [
         _span_for_field("root.date", before_txn.date, after_txn.date, index),
@@ -325,54 +344,6 @@ def _header_date_flag_spans(before_txn, after_txn, index: DiffIndex) -> list[Dif
         DiffSpan(" ", "normal"),
     ]
     return spans
-
-
-def _header_payee_spans(before_txn, after_txn, index: DiffIndex) -> list[DiffSpan]:
-    path = "root.payee"
-    before_payee = before_txn.payee
-    after_payee = after_txn.payee
-    entry = index.fields.get(path)
-
-    if entry:
-        kind, _ = entry
-        if kind == "removed" and before_payee:
-            return [
-                DiffSpan(_quote_always(before_payee), "removed"),
-                DiffSpan(" ", "normal"),
-            ]
-        if kind == "added" and after_payee:
-            return [
-                DiffSpan(_quote_always(after_payee), "added"),
-                DiffSpan(" ", "normal"),
-            ]
-        if kind == "changed" and after_payee:
-            return [
-                DiffSpan(_quote_always(after_payee), "changed"),
-                DiffSpan(" ", "normal"),
-            ]
-
-    if before_payee:
-        return [
-            DiffSpan(_quote_always(before_payee), "normal"),
-            DiffSpan(" ", "normal"),
-        ]
-    return []
-
-
-def _header_narration_spans(before_txn, after_txn, index: DiffIndex) -> list[DiffSpan]:
-    narration = before_txn.narration or ""
-    after_narration = after_txn.narration or ""
-    if not narration and not after_narration:
-        return []
-    return [
-        _span_for_field(
-            "root.narration",
-            narration,
-            after_narration,
-            index,
-            _quote_if_needed,
-        )
-    ]
 
 
 def _header_tag_spans(before_txn, index: DiffIndex) -> list[DiffSpan]:
