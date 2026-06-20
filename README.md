@@ -23,6 +23,7 @@ These edits are currently supported:
   - Editing or adding/removing metadata
   - Adding / removing tags
   - Editing the account or amount of any posting
+
 The extension doesn't currently support adding or removing entire postings.
 
 ## Installation
