@@ -13,6 +13,7 @@ DiffKind = Literal["normal", "changed", "removed", "added"]
 class DiffSpan:
     text: str
     kind: DiffKind
+    syntax: str | None = None
 
 
 @dataclass
@@ -270,7 +271,71 @@ def build_txn_diff_display(before_txn, after_txn, diff_dict: dict) -> TxnDiffDis
     for account_spans, amount_spans in posting_lines:
         lines.append(account_spans + amount_spans)
 
+    lines = [_expand_line_syntax(line) for line in lines]
+
     return TxnDiffDisplay(lines)
+
+
+_SYNTAX_RULES: list[tuple[str, re.Pattern[str]]] = [
+    ("string", re.compile(r'"[^"\\]*(?:\\.[^"\\]*)*"')),
+    ("date", re.compile(r"\d{4}-\d{2}-\d{2}")),
+    ("tag", re.compile(r"#[-\w]+")),
+    ("link", re.compile(r"\^[-\w]+")),
+    (
+        "account",
+        re.compile(
+            r"(?:Assets|Liabilities|Equity|Income|Expenses)"
+            r"(?::[A-Za-z0-9][A-Za-z0-9_-]*)*"
+        ),
+    ),
+    ("number", re.compile(r"-?\d+(?:\.\d+)?")),
+    ("currency", re.compile(r"(?<![A-Za-z0-9])[A-Z]{3}(?![A-Za-z0-9])")),
+]
+
+
+def _tokenize_beancount(text: str) -> list[tuple[str, str | None]]:
+    if not text:
+        return [("", None)]
+
+    tokens: list[tuple[str, str | None]] = []
+    pos = 0
+    while pos < len(text):
+        matched = False
+        for name, pattern in _SYNTAX_RULES:
+            match = pattern.match(text, pos)
+            if match:
+                tokens.append((match.group(0), name))
+                pos = match.end()
+                matched = True
+                break
+        if matched:
+            continue
+
+        next_pos = pos + 1
+        while next_pos < len(text):
+            if any(pattern.match(text, next_pos) for _, pattern in _SYNTAX_RULES):
+                break
+            next_pos += 1
+        tokens.append((text[pos:next_pos], None))
+        pos = next_pos
+
+    return tokens
+
+
+def _expand_span_syntax(span: DiffSpan) -> list[DiffSpan]:
+    if span.kind == "removed":
+        return [span]
+    return [
+        DiffSpan(text, span.kind, syntax)
+        for text, syntax in _tokenize_beancount(span.text)
+    ]
+
+
+def _expand_line_syntax(line: list[DiffSpan]) -> list[DiffSpan]:
+    expanded: list[DiffSpan] = []
+    for span in line:
+        expanded.extend(_expand_span_syntax(span))
+    return expanded
 
 
 def _quote_if_needed(value: str) -> str:

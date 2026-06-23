@@ -1,18 +1,35 @@
 {% if data.lastdiff_readable or data.txn_diff_display %}
-<div class="txn-diff-component">
-  {% if data.txn_diff_display %}
-  <div class="txn-diff-view txn-diff-view--ledger" data-view="diff">
-    <pre class="txn-diff-ledger">{% for line in data.txn_diff_display.lines %}<span class="txn-diff-line">{% for span in line %}<span class="txn-diff-{{ span.kind }}">{{ span.text }}</span>{% endfor %}</span>{% endfor %}</pre>
+<div class="txn-diff-component{% if data.txn_diff_display and data.lastdiff_readable %} txn-diff-component--has-toggle{% endif %}">
+  <div class="txn-diff-viewport">
+    {% if data.txn_diff_display %}
+    <div class="txn-diff-view txn-diff-view--ledger" data-view="diff">
+      <div class="txn-diff-editor">
+        <div class="txn-diff-gutter" aria-hidden="true">
+          {% for line in data.txn_diff_display.lines %}
+          <div class="txn-diff-gutter-line">{{ loop.index }}</div>
+          {% endfor %}
+        </div>
+        <div class="txn-diff-content">
+          {% for line in data.txn_diff_display.lines %}
+          <div class="txn-diff-line">{% for span in line %}<span class="txn-diff-{{ span.kind }}{% if span.syntax %} txn-syn-{{ span.syntax }}{% endif %}">{{ span.text }}</span>{% endfor %}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if data.lastdiff_readable %}
+    <div class="txn-diff-view txn-diff-view--text" data-view="text"{% if data.txn_diff_display %} hidden{% endif %}>
+      <div class="txn-diff-editor txn-diff-editor--text">
+        <div class="txn-diff-text-content">
+          <ul class="editreplay-lastdiff-list">
+            {% for line in data.lastdiff_readable %}
+              <li>{{ line }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
-  {% if data.lastdiff_readable %}
-  <div class="txn-diff-view txn-diff-view--text" data-view="text"{% if data.txn_diff_display %} hidden{% endif %}>
-    <ul class="editreplay-lastdiff-list">
-      {% for line in data.lastdiff_readable %}
-        <li>{{ line }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
 </div>
 {% endif %}
