@@ -169,6 +169,31 @@ export default {
     if (saveBtn) {
       saveBtn.addEventListener('click', saveEditReplay);
     }
+    const txnDiffToggles = document.querySelector('.txn-diff-view-toggles');
+    if (txnDiffToggles) {
+      const component = txnDiffToggles.closest('.editreplay-header-block')?.querySelector('.txn-diff-component');
+      const diffView = component?.querySelector('.txn-diff-view--ledger');
+      const textView = component?.querySelector('.txn-diff-view--text');
+      const textBtn = txnDiffToggles.querySelector('.txn-diff-view-btn--text');
+      const diffBtn = txnDiffToggles.querySelector('.txn-diff-view-btn--diff');
+
+      const setTxnDiffView = (view) => {
+        const showDiff = view === 'diff';
+        if (diffView) {
+          diffView.hidden = !showDiff;
+        }
+        if (textView) {
+          textView.hidden = showDiff;
+        }
+        textBtn?.classList.toggle('txn-diff-view-btn--active', !showDiff);
+        diffBtn?.classList.toggle('txn-diff-view-btn--active', showDiff);
+        textBtn?.setAttribute('aria-pressed', showDiff ? 'false' : 'true');
+        diffBtn?.setAttribute('aria-pressed', showDiff ? 'true' : 'false');
+      };
+
+      textBtn?.addEventListener('click', () => setTxnDiffView('text'));
+      diffBtn?.addEventListener('click', () => setTxnDiffView('diff'));
+    }
     // Attach click listeners to all filter-pill buttons
     document.querySelectorAll('.filter-pill').forEach(btn => {
       btn.addEventListener('click', function() {

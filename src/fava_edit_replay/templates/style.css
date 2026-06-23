@@ -1,10 +1,16 @@
+article:has(.editreplay-apply-btn-container) {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5em 1.5em 0;
+  box-sizing: border-box;
+}
 .editreplay-main-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1 1 auto;
   min-height: 0;
   box-sizing: border-box;
-  padding: 0 0.5em;
+  padding: 0;
 }
 .editreplay-header-block {
   flex: 0 0 auto;
@@ -18,12 +24,23 @@
   overflow-x: hidden;
   margin-bottom: 0.5em;
 }
+.editreplay-suggested-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.65em;
+  margin-left: auto;
+  justify-content: flex-end;
+}
 .editreplay-filter-shortcuts {
-  margin-bottom: 2em;
-  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em;
 }
 .editreplay-apply-btn-container {
   display: flex;
+  flex: 0 0 auto;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
@@ -31,8 +48,10 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 0.75em 0 0.5em 0;
-  margin-bottom: 0;
+  padding: 1.15em 1.5em;
+  margin: 0 -1.5em;
+  background: light-dark(hsl(0deg 0% 97%), hsl(0deg 0% 22%));
+  border-top: 1px solid var(--table-border, #e0e0e0);
 }
 
 /* Override sticky positioning for list-replays view */
@@ -56,18 +75,42 @@
   cursor: not-allowed !important;
   opacity: 0.7;
 }
-.editreplay-transactions-header {
-  flex: 0 0 auto;
+.editreplay-section-header {
   display: flex;
   align-items: center;
   gap: 1em;
+  margin-bottom: 0.5rem;
+}
+.editreplay-section-header h2 {
+  margin: 0;
+}
+.editreplay-transactions-header {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1em;
   margin-bottom: 0.5em;
+}
+.editreplay-transactions-header h2 {
+  margin: 0;
 }
 .editreplay-transactions-container .head {
   position: sticky;
   top: 0;
   background: #fafbfc;
   box-shadow: 0 2px 2px -2px #eee;
+}
+@media (max-width: 767px) {
+  article:has(.editreplay-apply-btn-container) {
+    padding: 1em 1em 0;
+  }
+  .editreplay-apply-btn-container {
+    margin-left: -1em;
+    margin-right: -1em;
+    padding: 1.15em 1em;
+  }
 }
 @media (max-width: 600px) {
   .editreplay-main-container {
@@ -96,8 +139,54 @@
   color: #005b8a;
   border-color: #007cba;
 }
-.editreplay-header-block .editreplay-lastdiff-list {
+.txn-diff-component {
   margin-bottom: 1em;
+}
+.editreplay-column-label {
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--table-header-text, #888);
+  white-space: nowrap;
+}
+.txn-diff-view-toggles {
+  display: flex;
+  flex-shrink: 0;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--background-button, #e0e0e0);
+}
+.txn-diff-view-btn {
+  border: none;
+  background: transparent;
+  padding: 0.2em 0.75em;
+  border-radius: 999px;
+  color: var(--table-header-text, #888);
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.txn-diff-view-btn:hover,
+.txn-diff-view-btn:focus {
+  color: var(--text-color, #333);
+  outline: none;
+}
+.txn-diff-view-btn--active {
+  background: var(--background, #fff);
+  color: var(--text-color, #333);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+}
+.txn-diff-view[hidden] {
+  display: none !important;
+}
+.editreplay-header-block .editreplay-lastdiff-list,
+.txn-diff-component .editreplay-lastdiff-list {
+  margin-bottom: 0;
   padding: 0.5em;
   background-color: #f5f5f5;
   border-left: 3px solid #007cba;
@@ -111,7 +200,7 @@
   background: #f5f5f5;
   border-left: 3px solid #007cba;
   border-radius: 3px;
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
   white-space: pre-wrap;
 }
 .txn-diff-line {
@@ -131,13 +220,6 @@
   background-color: #f5f5f5;
   border-left: 3px solid #ccc;
   border-radius: 3px;
-}
-.editreplay-transactions-header h2 {
-  margin: 0;
-}
-.editreplay-transactions-header #filter-shortcuts {
-  display: flex;
-  gap: 0.5em;
 }
 .editreplay-apply-btn {
   display: flex;

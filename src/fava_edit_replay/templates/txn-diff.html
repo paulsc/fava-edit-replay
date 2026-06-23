@@ -1,3 +1,18 @@
-{% if data.txn_diff_display %}
-<pre class="txn-diff-ledger">{% for line in data.txn_diff_display.lines %}<span class="txn-diff-line">{% for span in line %}<span class="txn-diff-{{ span.kind }}">{{ span.text }}</span>{% endfor %}</span>{% endfor %}</pre>
+{% if data.lastdiff_readable or data.txn_diff_display %}
+<div class="txn-diff-component">
+  {% if data.txn_diff_display %}
+  <div class="txn-diff-view txn-diff-view--ledger" data-view="diff">
+    <pre class="txn-diff-ledger">{% for line in data.txn_diff_display.lines %}<span class="txn-diff-line">{% for span in line %}<span class="txn-diff-{{ span.kind }}">{{ span.text }}</span>{% endfor %}</span>{% endfor %}</pre>
+  </div>
+  {% endif %}
+  {% if data.lastdiff_readable %}
+  <div class="txn-diff-view txn-diff-view--text" data-view="text"{% if data.txn_diff_display %} hidden{% endif %}>
+    <ul class="editreplay-lastdiff-list">
+      {% for line in data.lastdiff_readable %}
+        <li>{{ line }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
 {% endif %}
