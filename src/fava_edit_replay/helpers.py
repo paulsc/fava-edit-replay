@@ -6,6 +6,7 @@ from beancount.parser import parser
 from beancount.core.number import MISSING
 import re
 import logging
+import time
 
 from pathlib import Path
 import json
@@ -233,8 +234,17 @@ def apply_replays(
     # Sort transactions in reverse line order for safe in-place editing
     txns = [e for e in entries if isinstance(e, Transaction)]
     txns.sort(key=lambda t: (get_position(t)[0], -get_position(t)[1]))
+    total_txns = len(txns)
+    log(f"Applying {len(replays)} permanent rules...")
+    last_progress = time.monotonic()
 
-    for txn in txns:
+    for i, txn in enumerate(txns, 1):
+        now = time.monotonic()
+        if now - last_progress >= 3.0:
+            pct = int(i * 100 / total_txns) if total_txns else 100
+            log(f"Processed {i}/{total_txns} transactions ({pct}%)...")
+            last_progress = now
+
         filename, lineno = get_position(txn)
         applied = False
         for replay in replays:
@@ -279,4 +289,5 @@ def apply_replays(
                 f.writelines(file_lines[filename])
             # Logging: Wrote file: {filename}
             log(f"Wrote file: {filename}")
+    log(f"Total {modified_count} transaction matches.")
     return modified_count
