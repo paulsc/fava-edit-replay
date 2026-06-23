@@ -85,15 +85,83 @@ function loadReplay(btn) {
   const account = btn.getAttribute('data-account');
   const filter = btn.getAttribute('data-filter');
   const diff = btn.getAttribute('data-diff');
-  
+
   const url = new URL(window.location.href);
   url.searchParams.set('page', 'home');
   if (time) url.searchParams.set('time', time);
   if (account) url.searchParams.set('account', account);
   if (filter) url.searchParams.set('filter', filter);
   if (diff) url.searchParams.set('diff', diff);
-  
+
   window.location.href = url.toString();
+}
+
+function handleEditReplayKeydown(event) {
+  if (!(event.metaKey || event.ctrlKey) || event.key !== 's') {
+    return;
+  }
+  const form = document.getElementById('edit-replay-form');
+  const submitBtn = form?.querySelector('button[type="submit"]');
+  if (!form || submitBtn?.disabled) {
+    return;
+  }
+  event.preventDefault();
+  form.requestSubmit();
+}
+
+function openEditReplayModal(btn) {
+  const overlay = document.getElementById('edit-replay-overlay');
+  if (!overlay) return;
+
+  document.getElementById('edit-lineno').value = btn.getAttribute('data-lineno') || '';
+  document.getElementById('edit-time-filter').value = btn.getAttribute('data-time') || '';
+  document.getElementById('edit-account-filter').value = btn.getAttribute('data-account') || '';
+  document.getElementById('edit-advanced-filter').value = btn.getAttribute('data-filter') || '';
+  document.getElementById('edit-diff').value = btn.getAttribute('data-diff') || '';
+
+  overlay.hidden = false;
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('keydown', handleEditReplayKeydown);
+  document.getElementById('edit-time-filter').focus();
+}
+
+function closeEditReplayModal() {
+  const overlay = document.getElementById('edit-replay-overlay');
+  if (!overlay) return;
+  overlay.hidden = true;
+  document.body.style.overflow = '';
+  document.removeEventListener('keydown', handleEditReplayKeydown);
+}
+
+async function saveEditedReplay(event) {
+  event.preventDefault();
+  const form = event.target;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const saveLabel = submitBtn.textContent;
+  submitBtn.textContent = 'Saving...';
+  submitBtn.disabled = true;
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    params.set('lineno', form.lineno.value);
+    params.set('time', form.time_filter.value);
+    params.set('account', form.account_filter.value);
+    params.set('filter', form.advanced_filter.value);
+    params.set('diff', form.diff.value);
+    const response = await fetch(`update_replay?${params.toString()}`);
+    const result = await response.text();
+    if (result === 'Replay updated.') {
+      window.location.reload();
+      return;
+    }
+    alert(result);
+  } catch (error) {
+    console.error('Error updating replay:', error);
+    alert('Failed to update replay.');
+  } finally {
+    submitBtn.textContent = saveLabel;
+    submitBtn.disabled = false;
+  }
 }
 
 async function deleteReplay(btn) {
@@ -253,6 +321,18 @@ export default {
         applyFilterSuggestion(this);
       });
     });
+    // Attach click listeners to all edit-replay buttons
+    document.querySelectorAll('.edit-replay-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        openEditReplayModal(this);
+      });
+    });
+    const editOverlay = document.getElementById('edit-replay-overlay');
+    if (editOverlay) {
+      editOverlay.querySelector('.editreplay-overlay-bg')?.addEventListener('click', closeEditReplayModal);
+      editOverlay.querySelector('.editreplay-overlay-close')?.addEventListener('click', closeEditReplayModal);
+      document.getElementById('edit-replay-form')?.addEventListener('submit', saveEditedReplay);
+    }
     // Attach click listeners to all load-replay buttons
     document.querySelectorAll('.load-replay-btn').forEach(btn => {
       btn.addEventListener('click', function() {

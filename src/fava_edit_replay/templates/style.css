@@ -391,13 +391,15 @@ article:has(.editreplay-apply-btn-container) {
 }
 
 .editreplay-th-actions {
-  width: 6.5em;
+  width: 11em;
+  min-width: 11em;
 }
 
 /* Ensure action buttons don't get truncated */
 .editreplay-td-actions {
   white-space: nowrap;
   overflow: visible;
+  text-overflow: clip;
   text-align: center;
 }
 
@@ -416,11 +418,100 @@ article:has(.editreplay-apply-btn-container) {
   white-space: normal;
 }
 
-.delete-replay-btn, .load-replay-btn {
+.delete-replay-btn, .load-replay-btn, .edit-replay-btn {
   margin: 0 0.1em;
   line-height: 0.9em;
 }
 
 .load-replay-btn {
   font-weight: bold;
+}
+
+.editreplay-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-index-overlay, 3);
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+.editreplay-overlay[hidden] {
+  display: none !important;
+}
+
+.editreplay-overlay-bg {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-wrapper-background, hsl(0deg 0% 50% / 50%));
+  cursor: pointer;
+}
+
+.editreplay-overlay-panel {
+  position: relative;
+  width: 100%;
+  max-width: 767px;
+  padding: 1em;
+  margin: 10vh 0.5em 0.5em;
+  background: var(--background, #fff);
+  box-shadow: var(--box-shadow-overlay, 0 0 20px hsl(0deg 0% 50% / 50%));
+}
+
+.editreplay-overlay-panel form {
+  width: 100%;
+}
+
+.editreplay-overlay-panel h3 {
+  margin: 0 0 1em;
+}
+
+.editreplay-overlay-close {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 2em;
+  height: 2em;
+  margin: 0;
+  line-height: 1em;
+  color: var(--text-color-lighter, #999);
+}
+
+.editreplay-form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.editreplay-form-row > span:first-child {
+  flex: 0 0 9rem;
+  margin-right: 1rem;
+  font-size: 0.9em;
+  color: var(--text-color-lighter, #666);
+}
+
+.editreplay-form-row input,
+.editreplay-form-row textarea {
+  flex: 1;
+  min-width: 0;
+}
+
+.editreplay-form-row--diff {
+  align-items: start;
+}
+
+.editreplay-form-row--diff > span:first-child {
+  padding-top: 0.35em;
+}
+
+.editreplay-form-row textarea {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.9em;
+  resize: vertical;
+}
+
+.editreplay-form-actions {
+  margin-top: 1em;
 }

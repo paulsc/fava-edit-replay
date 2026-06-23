@@ -68,6 +68,32 @@ def load_replays_from_file(replays_path: Path) -> list[Replay]:
         )
     return replays 
 
+def update_replay_by_lineno(lineno: int, replay: Replay, replays_path: Path) -> None:
+    """Update a replay by line number in the YAML file."""
+    raw_replays = load_replays_with_lineno(replays_path)
+
+    updated_replays = []
+    found = False
+    for raw_replay in raw_replays:
+        if raw_replay.get('lineno') == lineno:
+            updated_replays.append({
+                'time_filter': replay.time_filter,
+                'account_filter': replay.account_filter,
+                'advanced_filter': replay.advanced_filter,
+                'diff': replay.diff,
+            })
+            found = True
+        else:
+            replay_copy = raw_replay.copy()
+            replay_copy.pop('lineno', None)
+            updated_replays.append(replay_copy)
+
+    if not found:
+        raise ValueError(f"No replay found at line {lineno}")
+
+    with replays_path.open("w", encoding="utf-8") as f:
+        yaml.safe_dump(updated_replays, f, allow_unicode=True, sort_keys=True)
+
 def delete_replay_by_lineno(lineno: int, replays_path: Path) -> None:
     """Delete a replay by line number from the YAML file."""
     raw_replays = load_replays_with_lineno(replays_path)

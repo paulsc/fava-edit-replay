@@ -38,6 +38,15 @@
         <td data-column="time" class="editreplay-td-time" title="{{ replay.time_filter }}">{{ replay.time_filter }}</td>
         <td data-column="account" class="editreplay-td-account" title="{{ replay.account_filter }}">{{ replay.account_filter }}</td>
         <td class="editreplay-td-actions">
+          <button class="edit-replay-btn muted"
+                data-lineno="{{ replay.lineno }}"
+                data-time="{{ replay.time_filter }}"
+                data-account="{{ replay.account_filter }}"
+                data-filter="{{ replay.advanced_filter }}"
+                data-diff="{{ replay.diff }}"
+                title="Edit rule">
+            ✎
+          </button>
           <button class="load-replay-btn muted" 
                 data-time="{{ replay.time_filter }}" 
                 data-account="{{ replay.account_filter }}" 
@@ -56,7 +65,38 @@
       {% endfor %}
     </tbody>
   </table>
-</div> 
+</div>
+
+<div id="edit-replay-overlay" class="editreplay-overlay" hidden>
+  <div class="editreplay-overlay-bg"></div>
+  <div class="editreplay-overlay-panel">
+    <button type="button" class="editreplay-overlay-close muted" aria-label="Close">×</button>
+    <form id="edit-replay-form" class="flex-column">
+      <h3>Edit Rule</h3>
+      <label class="editreplay-form-row">
+        <span>time_filter</span>
+        <input type="text" name="time_filter" id="edit-time-filter">
+      </label>
+      <label class="editreplay-form-row">
+        <span>account_filter</span>
+        <input type="text" name="account_filter" id="edit-account-filter">
+      </label>
+      <label class="editreplay-form-row">
+        <span>advanced_filter</span>
+        <input type="text" name="advanced_filter" id="edit-advanced-filter">
+      </label>
+      <label class="editreplay-form-row editreplay-form-row--diff">
+        <span>diff</span>
+        <textarea name="diff" id="edit-diff" rows="6"></textarea>
+      </label>
+      <input type="hidden" name="lineno" id="edit-lineno">
+      <div class="flex-row editreplay-form-actions">
+        <span class="spacer"></span>
+        <button type="submit" class="button">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <div class="editreplay-apply-btn-container">
   <div class="editreplay-btns-left">

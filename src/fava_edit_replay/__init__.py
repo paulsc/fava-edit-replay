@@ -24,7 +24,7 @@ from fava.ext import extension_endpoint
 from fava_edit_replay.helpers import apply_replays, make_filter_suggestions
 from fava_edit_replay.diff2text import build_txn_diff_display
 from fava_edit_replay.diff2text import format_diff
-from fava_edit_replay.replay import Replay, save_replay_to_file, load_replays_from_file, delete_replay_by_lineno
+from fava_edit_replay.replay import Replay, save_replay_to_file, load_replays_from_file, delete_replay_by_lineno, update_replay_by_lineno
 
 import logging
 logger = logging.getLogger("edit_replay")
@@ -98,6 +98,31 @@ class EditReplay(FavaExtensionBase):  # pragma: no cover
         )
         save_replay_to_file(replay, self.database_path())
         return "Replay saved."
+
+    @extension_endpoint
+    def update_replay(self):
+        """Update a replay by line number in the YAML file."""
+        lineno = request.args.get("lineno")
+        if not lineno:
+            return "No line number provided."
+
+        try:
+            lineno = int(lineno)
+            replay = Replay(
+                lineno=lineno,
+                time_filter=request.args.get("time", ""),
+                account_filter=request.args.get("account", ""),
+                advanced_filter=request.args.get("filter", ""),
+                diff=request.args.get("diff", ""),
+                diff_readable=None,
+            )
+            update_replay_by_lineno(lineno, replay, self.database_path())
+            return "Replay updated."
+        except ValueError as e:
+            return str(e)
+        except Exception as e:
+            logger.error(f"Error updating replay: {e}")
+            return f"Error updating replay: {e}"
 
     @extension_endpoint
     def delete_replay(self):
