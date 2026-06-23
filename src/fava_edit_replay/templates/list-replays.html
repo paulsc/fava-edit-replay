@@ -6,31 +6,37 @@
     <div class="editreplay-column-toggles">
       <span class="editreplay-column-toggles-label">Show Columns:</span>
       <label class="editreplay-column-toggle"><input type="checkbox" checked data-column="edits"> Edits</label>
+      <label class="editreplay-column-toggle"><input type="checkbox" checked data-column="filter"> Filter</label>
       <label class="editreplay-column-toggle"><input type="checkbox" checked data-column="lineno"> Line</label>
       <label class="editreplay-column-toggle"><input type="checkbox" checked data-column="time"> Time</label>
       <label class="editreplay-column-toggle"><input type="checkbox" checked data-column="account"> Account</label>
-      <label class="editreplay-column-toggle"><input type="checkbox" checked data-column="filter"> Filter</label>
     </div>
   </div>
   <table is="sortable-table" class="queryresults editreplay-full-width-table">
     <thead>
       <tr>
         <th data-sort="string" data-order="asc" data-column="edits" class="editreplay-th-edits">Edits</th>
+        <th data-sort="string" data-column="filter" class="editreplay-th-filter">Filter</th>
         <th data-sort="string" data-column="lineno" class="editreplay-th-lineno">Line</th>
         <th data-sort="string" data-column="time" class="editreplay-th-time">Time</th>
         <th data-sort="string" data-column="account" class="editreplay-th-account">Account</th>
-        <th data-sort="string" data-column="filter" class="editreplay-th-filter">Filter</th>
         <th class="editreplay-th-actions"></th>
       </tr>
     </thead>
     <tbody>
       {% for replay in data.replays|sort(attribute='diff_readable') %}
       <tr>
-        <td data-column="edits" class="editreplay-td-edits" title="{{ replay.diff_readable }}">{{ replay.diff_readable }}</td>
+        <td data-column="edits" class="editreplay-td-edits" title="{{ replay.diff_readable | join('\n') }}">
+          <ul class="editreplay-lastdiff-list editreplay-lastdiff-list--compact">
+            {% for line in replay.diff_readable %}
+            <li>{{ line }}</li>
+            {% endfor %}
+          </ul>
+        </td>
+        <td data-column="filter" class="editreplay-td-filter" title="{{ replay.advanced_filter }}">{{ replay.advanced_filter }}</td>
         <td data-column="lineno" class="editreplay-td-lineno" title="{{ replay.lineno }}">{{ replay.lineno }}</td>
         <td data-column="time" class="editreplay-td-time" title="{{ replay.time_filter }}">{{ replay.time_filter }}</td>
         <td data-column="account" class="editreplay-td-account" title="{{ replay.account_filter }}">{{ replay.account_filter }}</td>
-        <td data-column="filter" class="editreplay-td-filter" title="{{ replay.advanced_filter }}">{{ replay.advanced_filter }}</td>
         <td class="editreplay-td-actions">
           <button class="load-replay-btn muted" 
                 data-time="{{ replay.time_filter }}" 

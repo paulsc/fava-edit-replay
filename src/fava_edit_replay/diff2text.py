@@ -144,14 +144,6 @@ def format_diff(delta):
 
     return changes if changes else ["No changes"]
 
-def _ordinal(n: int) -> str:
-    if 11 <= n % 100 <= 13:
-        suffix = "th"
-    else:
-        suffix = {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
-    return f"{n}{suffix}"
-
-
 def _format_field_name(path):
     """
     Convert a path like 'root.postings[0].units.number' to readable text.
@@ -164,7 +156,7 @@ def _format_field_name(path):
     posting_match = re.match(r'postings\[(\d+)\]', path)
     if posting_match:
         index = int(posting_match.group(1))
-        ordinal = _ordinal(index + 1)
+        posting_num = index + 1
 
         remaining = path[posting_match.end():]
         if remaining.startswith('.'):
@@ -177,9 +169,9 @@ def _format_field_name(path):
         elif remaining:
             field = remaining.split('.')[-1].replace('_', ' ').title()
         else:
-            return ordinal
+            return f"Posting #{posting_num}"
 
-        return f"{ordinal} {field}"
+        return f"{field} #{posting_num}"
 
     # Split by dots and format each part
     parts = path.split('.')

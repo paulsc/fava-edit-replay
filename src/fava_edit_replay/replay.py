@@ -21,7 +21,7 @@ class Replay(NamedTuple):
     account_filter: str   # account filter
     advanced_filter: str  # advanced filter
     diff: str             # diff to apply as json string
-    diff_readable: str    # diff to apply as readable text
+    diff_readable: list[str] | None  # diff to apply as readable text lines
 
 def load_replays_with_lineno(replays_path: Path) -> list[dict]:
     """Load all replays from YAML file with line numbers added."""
@@ -55,7 +55,7 @@ def load_replays_from_file(replays_path: Path) -> list[Replay]:
     replays = []
     for replay in raw_replays:
         diff = replay.get('diff', '')
-        diff_readable = ', '.join(format_diff(json.loads(diff)))
+        diff_readable = format_diff(json.loads(diff))
         replays.append(
             Replay(
                 lineno=replay.get('lineno', -1),

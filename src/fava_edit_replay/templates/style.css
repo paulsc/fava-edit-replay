@@ -220,7 +220,8 @@ article:has(.editreplay-apply-btn-container) {
   box-sizing: border-box;
 }
 .editreplay-header-block .editreplay-lastdiff-list,
-.txn-diff-component .editreplay-lastdiff-list {
+.txn-diff-component .editreplay-lastdiff-list,
+.editreplay-td-edits .editreplay-lastdiff-list {
   margin: 0;
   padding: 0;
   background: transparent;
@@ -381,7 +382,8 @@ article:has(.editreplay-apply-btn-container) {
 }
 
 .editreplay-th-filter {
-  width: 200px;
+  width: 320px;
+  min-width: 320px;
 }
 
 .editreplay-th-edits {
@@ -399,15 +401,19 @@ article:has(.editreplay-apply-btn-container) {
   text-align: center;
 }
 
-/* Truncate long content in other columns */
+.editreplay-td-edits .editreplay-lastdiff-list--compact {
+  list-style: none;
+}
 .editreplay-td-lineno,
 .editreplay-td-time,
 .editreplay-td-account,
-.editreplay-td-filter,
-.editreplay-td-edits {
+.editreplay-td-filter {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.editreplay-td-edits {
+  white-space: normal;
 }
 
 .delete-replay-btn, .load-replay-btn {
