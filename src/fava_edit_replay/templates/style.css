@@ -1,6 +1,7 @@
 article:has(.editreplay-apply-btn-container) {
   display: flex;
   flex-direction: column;
+  min-height: 0;
   padding: 1.5em 1.5em 0;
   box-sizing: border-box;
 }
@@ -81,21 +82,11 @@ article:has(.editreplay-apply-btn-container) {
   border-top: 1px solid var(--table-border, #e0e0e0);
 }
 
-/* Pin button bar to bottom when replay list is short */
-article:has(.editreplay-list-replays-container) {
-  min-height: 0;
-  height: 100%;
-  box-sizing: border-box;
-}
-
 .editreplay-list-replays-container {
   flex: 1 1 auto;
   min-height: 0;
-}
-
-.editreplay-list-replays-container ~ .editreplay-apply-btn-container {
-  position: static;
-  margin-top: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .editreplay-btns-left {
   display: flex;

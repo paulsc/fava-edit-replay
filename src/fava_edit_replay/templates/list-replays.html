@@ -1,5 +1,6 @@
 {% import '_query_table.html' as querytable %}
 
+<div class="editreplay-main-container">
 <div class="editreplay-list-replays-container">
   <div class="editreplay-list-replays-header">
     <h2>Permanent Rules</h2>
@@ -67,6 +68,22 @@
   </table>
 </div>
 
+<div class="editreplay-apply-btn-container">
+  <div class="editreplay-btns-left">
+    <button id="back-to-home-btn" class="button">← Back</button>
+  </div>
+  <div class="editreplay-btns-right">
+    <button id="apply-all-replays-btn" class="button editreplay-apply-btn">
+      <svg width="22" height="16" viewBox="0 0 22 16">
+        <polygon points="1,2 11,8 1,14" fill="currentColor"/>
+        <polygon points="11,2 21,8 11,14" fill="currentColor"/>
+      </svg>
+      <span>Apply All</span>
+    </button>
+  </div>
+</div>
+</div>
+
 <div id="edit-replay-overlay" class="editreplay-overlay" hidden>
   <div class="editreplay-overlay-bg"></div>
   <div class="editreplay-overlay-panel">
@@ -95,20 +112,5 @@
         <button type="submit" class="button">Save</button>
       </div>
     </form>
-  </div>
-</div>
-
-<div class="editreplay-apply-btn-container">
-  <div class="editreplay-btns-left">
-    <button id="back-to-home-btn" class="button">← Back</button>
-  </div>
-  <div class="editreplay-btns-right">
-    <button id="apply-all-replays-btn" class="button editreplay-apply-btn">
-      <svg width="22" height="16" viewBox="0 0 22 16">
-        <polygon points="1,2 11,8 1,14" fill="currentColor"/>
-        <polygon points="11,2 21,8 11,14" fill="currentColor"/>
-      </svg>
-      <span>Apply All</span>
-    </button>
   </div>
 </div>
