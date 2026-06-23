@@ -314,6 +314,43 @@ article:has(.editreplay-apply-btn-container) {
   table-layout: fixed;
 }
 
+.editreplay-list-replays-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.editreplay-list-replays-header h2 {
+  margin: 0;
+}
+
+.editreplay-column-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75em;
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.editreplay-column-toggles-label {
+  color: #666;
+}
+
+.editreplay-column-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  cursor: pointer;
+}
+
+.editreplay-full-width-table .editreplay-col-hidden {
+  display: none;
+}
+
 /* Full width table with truncated contents */
 .editreplay-full-width-table {
   width: 100% !important;

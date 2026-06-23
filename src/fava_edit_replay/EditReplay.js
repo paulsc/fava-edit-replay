@@ -146,6 +146,57 @@ async function applyAllReplays() {
   }
 }
 
+const LIST_REPLAYS_COLUMNS_KEY = 'editreplay-list-replays-hidden-columns';
+
+function getHiddenListReplayColumns() {
+  try {
+    const stored = localStorage.getItem(LIST_REPLAYS_COLUMNS_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
+function setHiddenListReplayColumns(hidden) {
+  localStorage.setItem(LIST_REPLAYS_COLUMNS_KEY, JSON.stringify(hidden));
+}
+
+function applyListReplayColumnVisibility(table, hiddenColumns) {
+  table.querySelectorAll('[data-column]').forEach((el) => {
+    const column = el.getAttribute('data-column');
+    el.classList.toggle('editreplay-col-hidden', hiddenColumns.includes(column));
+  });
+}
+
+function initListReplaysColumnToggles() {
+  const table = document.querySelector('.editreplay-list-replays-container table');
+  const toggles = document.querySelector('.editreplay-column-toggles');
+  if (!table || !toggles) {
+    return;
+  }
+
+  const hiddenColumns = getHiddenListReplayColumns();
+  applyListReplayColumnVisibility(table, hiddenColumns);
+
+  toggles.querySelectorAll('input[data-column]').forEach((input) => {
+    const column = input.getAttribute('data-column');
+    input.checked = !hiddenColumns.includes(column);
+    input.addEventListener('change', () => {
+      const hidden = getHiddenListReplayColumns();
+      if (input.checked) {
+        const index = hidden.indexOf(column);
+        if (index >= 0) {
+          hidden.splice(index, 1);
+        }
+      } else if (!hidden.includes(column)) {
+        hidden.push(column);
+      }
+      setHiddenListReplayColumns(hidden);
+      applyListReplayColumnVisibility(table, hidden);
+    });
+  });
+}
+
 function handleJournalClick(event) {
   const target = event.target;
   if (!(target instanceof HTMLElement) || target instanceof HTMLAnchorElement) {
@@ -242,5 +293,6 @@ export default {
     if (applyAllReplaysBtn) {
       applyAllReplaysBtn.addEventListener('click', applyAllReplays);
     }
+    initListReplaysColumnToggles();
   }
 }
