@@ -17,6 +17,33 @@ article:has(.editreplay-apply-btn-container) {
   margin-bottom: 1em;
   padding: 1em 0 0.5em 0;
 }
+.editreplay-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5em;
+  padding: 2em 1.5em;
+  color: var(--table-header-text, #888);
+}
+.editreplay-header-block .editreplay-empty-state {
+  min-height: 8em;
+}
+.editreplay-empty-state-icon {
+  opacity: 0.45;
+  margin-bottom: 0.25em;
+}
+.editreplay-empty-state-text {
+  margin: 0;
+  font-size: 1.05em;
+  color: light-dark(hsl(0deg 0% 35%), hsl(0deg 0% 72%));
+}
+.editreplay-empty-state-hint {
+  margin: 0;
+  font-size: 0.9em;
+  opacity: 0.85;
+}
 .editreplay-transactions-container {
   flex: 1 1 auto;
   min-height: 100px;
@@ -54,10 +81,21 @@ article:has(.editreplay-apply-btn-container) {
   border-top: 1px solid var(--table-border, #e0e0e0);
 }
 
-/* Override sticky positioning for list-replays view */
-.editreplay-list-replays-container + .editreplay-apply-btn-container {
+/* Pin button bar to bottom when replay list is short */
+article:has(.editreplay-list-replays-container) {
+  min-height: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.editreplay-list-replays-container {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.editreplay-list-replays-container ~ .editreplay-apply-btn-container {
   position: static;
-  margin-top: 1em;
+  margin-top: auto;
 }
 .editreplay-btns-left {
   display: flex;
@@ -294,13 +332,6 @@ article:has(.editreplay-apply-btn-container) {
 .txn-syn-tag,
 .txn-syn-link {
   color: var(--editor-label-name, hsl(248deg 80% 33%));
-}
-.editreplay-header-block .editreplay-noedit {
-  margin-bottom: 1em;
-  padding: 0.5em;
-  background-color: #f5f5f5;
-  border-left: 3px solid #ccc;
-  border-radius: 3px;
 }
 .editreplay-apply-btn {
   display: flex;

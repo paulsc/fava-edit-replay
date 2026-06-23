@@ -9,10 +9,10 @@
       </div>
       {% endif %}
     </div>
-    {% include "txn-diff.html" %}
-    {% if not data.lastdiff_readable %}
-      <div class="editreplay-noedit">No Edit recorded.
-      Please edit a transaction first by clicking on it's date.</div>
+    {% if data.lastdiff_json %}
+      {% include "txn-diff.html" %}
+    {% else %}
+      {% include "empty-state.html" %}
     {% endif %}
   </div>
 
