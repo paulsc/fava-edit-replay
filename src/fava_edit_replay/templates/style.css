@@ -83,10 +83,17 @@ article:has(.editreplay-apply-btn-container) {
 }
 
 .editreplay-list-replays-container {
+  display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
+}
+
+.editreplay-list-replays-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
 }
 .editreplay-btns-left {
   display: flex;
@@ -332,13 +339,21 @@ article:has(.editreplay-apply-btn-container) {
   vertical-align: middle;
   margin-right: 0.3em;
 }
-.editreplay-list-replays-container .queryresults {
+.editreplay-list-replays-scroll .queryresults {
   width: 100%;
   table-layout: fixed;
 }
 
+.editreplay-full-width-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--table-header-background);
+}
+
 .editreplay-list-replays-header {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
   gap: 1em;
@@ -390,6 +405,11 @@ article:has(.editreplay-apply-btn-container) {
   white-space: nowrap;
 }
 
+.editreplay-full-width-table .editreplay-th-actions,
+.editreplay-full-width-table .editreplay-td-actions {
+  overflow: visible;
+}
+
 /* Column width definitions */
 .editreplay-th-lineno {
   width: 60px;
@@ -404,25 +424,44 @@ article:has(.editreplay-apply-btn-container) {
 }
 
 .editreplay-th-filter {
-  width: 320px;
-  min-width: 320px;
+  width: 15%;
 }
 
 .editreplay-th-edits {
   width: auto;
 }
 
-.editreplay-th-actions {
-  width: 11em;
-  min-width: 11em;
-}
-
-/* Ensure action buttons don't get truncated */
+.editreplay-th-actions,
 .editreplay-td-actions {
+  width: 7em;
+  min-width: 7em;
+  max-width: 7em;
   white-space: nowrap;
   overflow: visible;
   text-overflow: clip;
+  position: sticky;
+  right: 0;
+  z-index: 1;
+}
+
+.editreplay-th-actions {
+  z-index: 4;
+  background-color: var(--table-header-background);
+}
+
+.editreplay-td-actions {
   text-align: center;
+  padding-left: 0.35em;
+  padding-right: 0.35em;
+  background-color: inherit;
+}
+
+.editreplay-full-width-table tbody tr:nth-child(2n) .editreplay-td-actions {
+  background-color: var(--table-background-even);
+}
+
+.editreplay-full-width-table tbody tr:nth-child(2n+1) .editreplay-td-actions {
+  background-color: var(--background);
 }
 
 .editreplay-td-edits .editreplay-lastdiff-list--compact {
@@ -440,13 +479,47 @@ article:has(.editreplay-apply-btn-container) {
   white-space: normal;
 }
 
-.delete-replay-btn, .load-replay-btn, .edit-replay-btn {
+.editreplay-td-actions .delete-replay-btn,
+.editreplay-td-actions .load-replay-btn,
+.editreplay-td-actions .edit-replay-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 1.85em;
+  height: 1.85em;
+  padding: 0;
   margin: 0 0.1em;
-  line-height: 0.9em;
+  line-height: 1;
+  vertical-align: middle;
+  color: var(--text-color-lightest);
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: none;
+  filter: none;
 }
 
-.load-replay-btn {
-  font-weight: bold;
+.editreplay-td-actions .delete-replay-btn:hover,
+.editreplay-td-actions .load-replay-btn:hover,
+.editreplay-td-actions .edit-replay-btn:hover,
+.editreplay-td-actions .delete-replay-btn:focus-visible,
+.editreplay-td-actions .load-replay-btn:focus-visible,
+.editreplay-td-actions .edit-replay-btn:focus-visible {
+  color: var(--text-color-lighter);
+  background-color: var(--button-muted-background);
+  border-color: var(--border-lighter);
+  box-shadow: none;
+  filter: none;
+}
+
+.editreplay-td-actions .delete-replay-btn svg,
+.editreplay-td-actions .load-replay-btn svg,
+.editreplay-td-actions .edit-replay-btn svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
 }
 
 .editreplay-overlay {
