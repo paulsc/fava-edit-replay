@@ -1,17 +1,18 @@
 async function applyEditReplayDiff() {
   const button = document.getElementById('apply-diff-btn');
   const buttonText = document.getElementById('button-text');
+  const defaultApplyLabel = button?.dataset.defaultLabel || buttonText?.textContent || 'Apply Replay';
   if (button.disabled) return;
   buttonText.textContent = 'Applying...';
   button.disabled = true;
- 
+
   try {
     const params = new URLSearchParams(window.location.search);
     // Get the diff JSON from window.lastDiffJson
     const diff = window.lastDiffJson;
     if (!diff) {
       alert('No diff to apply.');
-      buttonText.textContent = 'Edit Replay';
+      buttonText.textContent = defaultApplyLabel;
       button.disabled = false;
       return;
     }
@@ -24,13 +25,14 @@ async function applyEditReplayDiff() {
   } catch (error) {
     console.error("Error applying diff:", error);
     alert("Failed to apply diff.");
-    buttonText.textContent = 'Edit Replay';
+    buttonText.textContent = defaultApplyLabel;
     button.disabled = false;
   }
 }
 
 async function saveEditReplay() {
   const button = document.getElementById('save-replay-btn');
+  const saveLabel = button?.querySelector('span')?.textContent || 'Save as Permanent Rule';
   if (button.disabled) return;
   button.textContent = 'Saving...';
   button.disabled = true;
@@ -40,7 +42,7 @@ async function saveEditReplay() {
     const diff = window.lastDiffJson;
     if (!diff) {
       alert('No diff to save.');
-      button.textContent = 'Save Replay';
+      button.textContent = saveLabel;
       button.disabled = false;
       return;
     }
@@ -49,12 +51,12 @@ async function saveEditReplay() {
     const response = await fetch(url);
     const result = await response.text();
     alert(result);
-    button.textContent = 'Save Replay';
+    button.textContent = saveLabel;
     button.disabled = false;
   } catch (error) {
     console.error('Error saving replay:', error);
     alert('Failed to save replay.');
-    button.textContent = 'Save Replay';
+    button.textContent = saveLabel;
     button.disabled = false;
   }
 }

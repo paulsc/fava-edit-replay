@@ -100,7 +100,7 @@
   <div class="editreplay-apply-btn-container">
     <div class="editreplay-btns-left">
       <button id="list-replays-btn" class="button">
-        List Replays
+        List Permanent Rules
       </button>
       <button id="save-replay-btn" class="button editreplay-apply-btn" {% if not data.lastdiff_json %}disabled aria-disabled="true"{% endif %}>
         <svg width="22" height="16" viewBox="0 0 64 64">
@@ -110,18 +110,16 @@
           <path d="M17 42h30v2H17z" fill="#ffffff"></path>
           <path d="M17 48h30v2H17z" fill="#ffffff"></path>
         </svg>
-        <span>Save Replay</span>
+        <span>Save as Permanent Rule</span>
       </button>
     </div>
     <div class="editreplay-btns-right">
-      <button id="apply-diff-btn" class="button editreplay-apply-btn" onclick="window.applyEditReplayDiff()" {% if not data.lastdiff_json %}disabled aria-disabled="true"{% endif %}>
+      <button id="apply-diff-btn" class="button editreplay-apply-btn" onclick="window.applyEditReplayDiff()" data-default-label="Apply Replay (to {{ data.transactions|length }} transactions)" {% if not data.lastdiff_json %}disabled aria-disabled="true"{% endif %}>
         <svg width="22" height="16" viewBox="0 0 22 16">
           <polygon points="1,2 11,8 1,14" fill="currentColor"/>
           <polygon points="11,2 21,8 11,14" fill="currentColor"/>
         </svg>
-        <span id="button-text">Edit Replay</span>
-        &nbsp;
-        <small>(apply to {{ data.transactions|length }} transactions)</small>
+        <span id="button-text">Apply Replay (to {{ data.transactions|length }} transactions)</span>
       </button>
       {% if data.lastdiff_json %}
         <span id="editreplay-diff-json" style="display:none;">{{ data.lastdiff_json }}</span>
