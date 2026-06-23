@@ -87,7 +87,7 @@ def format_diff(delta):
         for path, change in delta["values_changed"].items():
             field_name = _format_field_name(path)
             new_value = change.get("new_value", "")
-            changes.append(f'{field_name} changed to "{new_value}"')
+            changes.append(f'{field_name} → "{new_value}"')
 
     # Handle type_changes
     if "type_changes" in delta:
@@ -144,6 +144,14 @@ def format_diff(delta):
 
     return changes if changes else ["No changes"]
 
+def _ordinal(n: int) -> str:
+    if 11 <= n % 100 <= 13:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"{n}{suffix}"
+
+
 def _format_field_name(path):
     """
     Convert a path like 'root.postings[0].units.number' to readable text.
@@ -156,26 +164,22 @@ def _format_field_name(path):
     posting_match = re.match(r'postings\[(\d+)\]', path)
     if posting_match:
         index = int(posting_match.group(1))
-        if index == 0:
-            posting_text = "First posting"
-        elif index == 1:
-            posting_text = "Second posting"
-        elif index == 2:
-            posting_text = "Third posting"
-        else:
-            posting_text = f"{index + 1}th posting"
+        ordinal = _ordinal(index + 1)
 
-        # Replace the posting part and continue with the rest
         remaining = path[posting_match.end():]
         if remaining.startswith('.'):
             remaining = remaining[1:]
 
         if remaining == 'units.number':
-            return f"{posting_text} amount"
+            field = "Amount"
+        elif remaining == 'units.currency':
+            field = "Currency"
         elif remaining:
-            return f"{posting_text} {remaining.replace('_', ' ').title()}"
+            field = remaining.split('.')[-1].replace('_', ' ').title()
         else:
-            return posting_text
+            return ordinal
+
+        return f"{ordinal} {field}"
 
     # Split by dots and format each part
     parts = path.split('.')
