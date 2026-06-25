@@ -2,6 +2,10 @@
 
 A bulk edit extension for [Fava](https://beancount.github.io/fava/), the web interface for Beancount. 
 
+<img width="1200" alt="Screenshot 2026-06-25 at 17 46 31" src="https://github.com/user-attachments/assets/c663cfa4-2ac3-447c-963b-714c4bca71e5" />
+
+---
+
 Watch the video below or read [the blog post](https://medium.com/@paulsc/fava-categorizing-transactions-3c678b676f83).
 
 <a href="https://www.youtube.com/watch?v=xuy0AhDnU-U">
